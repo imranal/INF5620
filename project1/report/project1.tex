@@ -1,0 +1,108 @@
+\documentclass[11pt]{article} % use larger type; default would be 10pt
+
+\usepackage{geometry} % to change the page dimensions
+\geometry{a4paper} % or letterpaper (US) or a5paper or....
+
+\usepackage{amsmath}
+
+
+\title{Project 1}
+\date{} 
+
+\begin{document}
+\maketitle
+
+\section{The Physical Problem}
+
+The parachuter experiences the following forces :
+\begin{itemize}
+\item Gravity, $F_g$
+\item Drag, $F_d$
+\item Buouyancy, $F_b$
+\end{itemize}
+Newton's second law states that the sum of forces acting on the body equals the mass of the body times acceleration :
+
+\[ ma = \sum F_{ext}\]
+or in the case of the parachuter
+
+\[ m\frac{dv}{dt} = F_g + F_d + F_b\]
+where
+
+\begin{equation*}
+F_g = mg, \hspace{2mm}
+F_d = -\frac{1}{2}C_D\rho|v|v, \hspace{1mm} \text{and} \hspace{2mm}
+F_b = -\rho gV.
+\end{equation*}
+
+\subsection{Numerical Scheme}
+In general we can write the ODE as following :
+\begin{align} 
+\dot{v} = -a(t)|v|v + b(t) \label{eq:1} \tag{1.a}\\
+     v(0) = v_0 \tag{1.b}
+\end{align}
+for any a(t) and b(t), and start velocity $v_0$. For our physical problem  a = $\frac{C_D \rho}{2m}$ 
+and b = g - $\frac{\rho gV}{m}$.Using the approximation $v'(t_n) \approx \frac{v^{n+1} - v^n}
+{t^{n+1} - t^n} $, the numerical scheme then takes the following form :\\
+\begin{align}
+v^{n+1} &= \frac{v^n + b^{n+\frac{1}{2}}\Delta t}{1 + \Delta t a^{n+\frac{1}{2} }|v^n|}  
+\label{eq:2} \tag{2}\\
+a^{n+\frac{1}{2}} &= \frac{a^{n+1}+a^n}{2} \notag\\
+b^{n+\frac{1}{2}} &= \frac{b^{n+1}+b^n}{2} \notag
+\end{align}
+where $a^{n} = a(t_n) \text{ and } b^{n}  = b(t_n)$ are function values evaluated at the mesh points.
+
+We have managed to simplify the scheme by using geometric averaging for the term $|v|v$. By 
+doing so we have linearized the nonlinear ODE \eqref{eq:1}. Finally we employed the Crank 
+Nicolson scheme by evaluating the node points at $n+\frac{1}{2}$. Hence forth we will refer to b as 
+the source term when we perform our tests.
+
+\section{Verification \& Debugging}
+After we have implemented the solver, we should \emph{always} test it for simple cases where 
+we can expect machine precision. A good exercise is to check for a constant solution. To accomplish 
+this, we have to construct the right ODE problem. We can specify any a(t), then we can fit the source 
+term to the problem :
+
+For $v_e$ = 4\footnote{To satisfy this solution, the initial condition $v_e(0)$ must equal 4.},
+\begin{align*}
+0 &= -16a(t) + b(t) \\
+&\Downarrow \\
+b(t) &= 16a(t)
+\end{align*}
+Inserting this expression for b(t) into the scheme
+\begin{align*}
+v^{n+1} = \frac{v^n + 16\Delta t a^{n+\frac{1}{2}}}{1 + \Delta t a^{n+\frac{1}{2}}|v^n|}.
+\end{align*}
+If we now let $v^n = 4$, then the scheme becomes
+\begin{align*}
+v^{n+1} &= 4\frac{1 + 4\Delta t a^{n+\frac{1}{2}}}{1 + 4\Delta t a^{n+\frac{1}{2}}} \\
+             &= 4.
+\end{align*}
+We realize that it may be a good idea to design a general solver which can handle any a(t) and b(t). 
+That is the reason why we have chosen to do an averaging of the function values. 
+
+In the exercise we are required to demonstrate that a linear funciton of \textbf{t} does not fullfill 
+the discrete equation (because of the geometric mean used for the quadratic drag term). Let us
+then observe what happens  if we try the solution $v_e = ct$. The discrete solution becomes $v^n 
+= c\Delta t n$. This implies that we should expect $v^{n+1} = c\Delta t (n+1)$. Assume that the 
+source term, b, is zero. Then the scheme \eqref{eq:2} can be written as following
+
+\begin{align*}
+v^{n+1} = \frac{c\Delta t n}{1 + \Delta t a^{n+\frac{1}{2}}|c\Delta t n|}.
+\end{align*}
+This is obviously not $c\Delta t (n+1)$ \footnote[1]{Note that c is simply a constant.} . We can fix this 
+problem by choosing b(t) such that it fits the scheme. As we did for the linear case, if we 
+perform the same calculations as above, we end up with the desired result :
+
+\begin{align*}
+c &= -a(t)ct|ct| + b(t) \\
+&\Downarrow \text{Rearranging for b(t)}\\
+b(t) &= c + a(t)ct|ct| \\
+&\Downarrow \text{The discrete version, after using geometric averaging}\\
+b^{n+\frac{1}{2}} &= c + a^{n+\frac{1}{2}}c\Delta t(n+1)|c\Delta t n| \\
+&\Downarrow  \text{Inserting this expression in our scheme}\\
+v^{n+1} &= \frac{c\Delta t (n+1) + \Delta t a^{n+\frac{1}{2}}c\Delta t(n+1)|c\Delta t n|}{1 + 
+\Delta t  a^{n+\frac{1}{2}}|c\Delta t n|}  \\
+             &= c\Delta t (n+1)
+\end{align*}
+which is what we wanted. 
+\end{document}

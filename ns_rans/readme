@@ -1,0 +1,24 @@
+This repository is a joint project in INF5620 by Imran Ali (imranal@math.uio.no) and 
+Daniel Aleksander Mo Soreide Houshmand (danhoush@math.uio.no). 
+
+
+In this project we have attempted to numerically solve the Navier-Stokes equations, 
+along with the Reynolds stress transport equations using the k-epsilon model. 
+Unfortunately we were unable to perform the last step.
+
+
+During this intial phase of the project we tried to focus on the phyics and mathematics 
+and as a result we have managed to protray the theory sufficiently in our report. 
+This however made our efforts in solving the equations in FEniCS some what half-baked. 
+We feel that due to the lack of time and the deadline of the exams approaching ever-near,
+delivering this unfinished work in its present form was a necessity.
+
+
+Our Chorin solver has not been tested for convergence, which basically means that we 
+cannot verify if the results that are produced are correct and sound. It has been
+a daunting task to fully comprehend all the aspects sorrounding the numerics behind
+NS equations and as such, our understanding in this matter have increased quite much
+in these last two weeks.
+
+
+The report is almost complete; missing the most important component : results!

@@ -1,0 +1,10 @@
+ * Values are ok, not too important.
+ * Nice, simple tex report.
+ * Good class based implementation. 
+ * Some use of docstring, that's good. Almost no commenting, important!
+ * Nice argparser.
+ * Not neccessary with two problem classes, everything could easily be implemented into one class.
+ * Try and except algorithm in solver: not necessary, but ok.
+ * It lookes like you have got a good overview of everything.
+
+Approved.

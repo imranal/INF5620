@@ -1,0 +1,18 @@
+Wave assignment by 
+
+1) Abushet Wosene Simanesew
+2) Daniel Alexander Mo Soreide Houshmand
+3) Imran Ali
+
+
+File structure :
+
+doc folder contains the report
+
+src folder contains the following files :
+
+wave_solver.py :  Contains the wave solver with scalar and vectorized version
+test_cases.py  :  Contains most of the test cases from the mandatory assignment
+manufactured.py : Contains sympy script for the MMS solution
+
+src/fig folder contains animations of certain test cases

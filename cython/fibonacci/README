@@ -1,0 +1,4 @@
+Setup file was built with following command :
+
+>> python setup.py build_ext --inplace
+
